@@ -360,7 +360,7 @@ export default function ConsultationWizard() {
         unoptimized
         width={1440}
         height={745}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1440px] h-[744.75px] max-w-none pointer-events-none select-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1440px] h-[744.75px] max-w-none pointer-events-none select-none max-lg:w-full max-lg:h-auto max-lg:max-w-full"
       />
       <div className="relative max-w-[1440px] mx-auto px-[80px] py-[84px] max-md:px-[20px] max-md:py-[40px]">
         <HeroEnter index={0}>
