@@ -17,14 +17,12 @@ export default function CtaBand() {
           <img
             src="/assets/home/cta-glow-left.png"
             alt=""
-            className="pointer-events-none absolute left-0 top-0 max-lg:hidden"
-            style={{ width: 430.1, height: 297.71 }}
+            className="pointer-events-none absolute left-0 top-0 w-[430.1px] h-[297.71px] max-lg:h-auto max-lg:w-[80%]"
           />
           <img
             src="/assets/home/cta-glow-right.png"
             alt=""
-            className="pointer-events-none absolute right-0 max-lg:hidden"
-            style={{ top: 111.94, width: 437.1, height: 317.74 }}
+            className="pointer-events-none absolute right-0 top-[111.94px] w-[437.1px] h-[317.74px] max-lg:top-auto max-lg:bottom-0 max-lg:h-auto max-lg:w-[80%]"
           />
           <div className="relative flex w-full flex-col items-center gap-[17px]">
             <h2 className="text-center text-[58px] font-bold leading-[56px] text-secondary-0 max-lg:text-[38px] max-lg:leading-[1.1]">
