@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Readymade Solutions — Landing Site
 
-## Getting Started
+Marketing site for Readymade Solution Inc: Home, Projects, About Us, and a
+multi-step **Book Consultation** wizard backed by the Cal.com API. Built 1:1
+from the Figma design.
 
-First, run the development server:
+## Stack
+
+- **Next.js 15** (App Router) + **React** + **TypeScript**
+- **Tailwind CSS v4**
+- **Motion** (`motion/react`) for scroll reveals, hero entrances, and step transitions
+- **Cal.com API v2** for consultation availability + booking
+- Brand display font **Faktum Test** (self-hosted via `next/font/local`), Inter + Hanken Grotesk as UI/fallback
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Home — hero, trusted-by logo marquee, products, testimonials, process, CTA |
+| `/projects` | Project portfolio (cards link to live client sites) |
+| `/about` | Company story, values, CTA |
+| `/consultation` | Multi-step booking wizard (Build a project / Use a product branches) wired to Cal.com |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then fill in the values (see below)
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env.local` and set:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Purpose |
+|---|---|
+| `CAL_API_KEY` | Cal.com API key (**server-only**, never exposed to the client). Create at https://app.cal.com/settings/developer/api-keys |
+| `CAL_EVENT_TYPE_ID` | Numeric ID of the Cal.com event type for the 30-minute consultation |
 
-## Learn More
+The Cal.com routes (`/api/cal/slots`, `/api/cal/book`) read these on the server only.
+If they're unset (or Cal.com errors), the wizard gracefully falls back to sample
+time slots and a simulated booking so the UI still works in development.
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev     # start the dev server
+npm run build   # production build
+npm run start   # serve the production build
+npm run lint    # eslint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The Faktum Test font files in `src/fonts/` are a licensed brand font — verify
+  your license before deploying publicly.
+- Deployable to Vercel with zero config; set the two `CAL_*` env vars in the
+  project settings.

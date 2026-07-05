@@ -8,19 +8,81 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Readymade brand palette (from Figma variables) */
+  --color-primary-100: #d9f6ef;
+  --color-primary-500: #45d2af;
+  --color-brand: #17ddbc;
+  --color-secondary-0: #fcfcfc;
+  --color-secondary-100: #edecec;
+  --color-secondary-300: #a2a2a2;
+  --color-secondary-500: #6d6d6d;
+  --color-secondary-800: #2e2e2e;
+  --color-secondary-900: #171717;
+  --color-neutral-300: #d2d2d2;
+
+  /* Faktum Test (bundled OTF); Hanken Grotesk covers any glyphs the trial cut lacks */
+  --font-display: var(--font-faktum), var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-display);
+}
+
+/* Infinite logo marquee: content duplicated once, track slides -50% */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Tactile press for buttons/CTAs */
+.pressable {
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.pressable:hover {
+  transform: translateY(-1px);
+}
+.pressable:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Card lift on hover */
+.liftable {
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.liftable:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pressable,
+  .pressable:hover,
+  .pressable:active,
+  .liftable,
+  .liftable:hover {
+    transform: none;
+  }
 }
