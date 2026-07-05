@@ -735,18 +735,6 @@ export default function ConsultationWizard() {
             </div>
           )}
         </div>
-        {step === 4 ? (
-          /* Confetti layer — exported from Figma (node 91:1709), positioned per frames 91:1368 / 91:2467 */
-          <Image
-            src="/assets/consultation/confetti.gif"
-            alt=""
-            aria-hidden
-            unoptimized
-            width={339}
-            height={190}
-            className="absolute left-[731px] top-[75px] w-[339px] h-[190px] max-w-none pointer-events-none select-none max-lg:hidden"
-          />
-        ) : null}
       </div>
     </div>
   );
@@ -893,9 +881,19 @@ function SuccessCard({
       initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: EASE }}
-      className="w-[632px] max-w-full bg-white border-[1.128px] border-[#e8ebe6] rounded-[27.07px] shadow-[0px_33.838px_78.955px_-45.117px_rgba(14,15,12,0.36)] overflow-hidden"
+      className="relative w-[632px] max-w-full bg-white border-[1.128px] border-[#e8ebe6] rounded-[27.07px] shadow-[0px_33.838px_78.955px_-45.117px_rgba(14,15,12,0.36)] overflow-hidden"
     >
-      <div className="border-t-8 border-primary-500 px-[38px] pt-[38px] pb-[38px] max-sm:px-[28px] max-sm:pt-[32px] max-sm:pb-[32px]">
+      {/* Celebration confetti — animated GIF from Figma (node 91:1709), rains over the top of the card */}
+      <Image
+        src="/assets/consultation/confetti.gif"
+        alt=""
+        aria-hidden
+        unoptimized
+        width={339}
+        height={190}
+        className="pointer-events-none select-none absolute left-1/2 top-0 z-20 h-auto w-full max-w-[360px] -translate-x-1/2"
+      />
+      <div className="relative z-10 border-t-8 border-primary-500 px-[38px] pt-[38px] pb-[38px] max-sm:px-[28px] max-sm:pt-[32px] max-sm:pb-[32px]">
         <div className="flex flex-col gap-[32px] items-center w-full">
           <div className="flex flex-col gap-[20px] items-center w-full">
             <div className="flex flex-col gap-[10px] items-center w-full">
