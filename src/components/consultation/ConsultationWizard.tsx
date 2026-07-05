@@ -176,7 +176,7 @@ function StepRail({ branch, step }: { branch: Branch | null; step: number }) {
     branch === "product" ? "Choose product" : "Project details",
     "Time & details",
   ];
-  const activeIdx = Math.min(step, 3); // success screen keeps step 3 active
+  const activeIdx = step; // on the success screen (step 4) all steps read as done
 
   return (
     <div className="flex flex-col gap-[24px] py-[14px]">
@@ -895,10 +895,10 @@ function SuccessCard({
       transition={{ duration: 0.5, ease: EASE }}
       className="w-[632px] max-w-full bg-white border-[1.128px] border-[#e8ebe6] rounded-[27.07px] shadow-[0px_33.838px_78.955px_-45.117px_rgba(14,15,12,0.36)] overflow-hidden"
     >
-      <div className="border-t-8 border-primary-500 px-[38px] pt-[38px] pb-[38px] max-sm:px-[20px]">
-        <div className="flex flex-col gap-[32px] items-center">
-          <div className="flex flex-col gap-[20px] items-center">
-            <div className="flex flex-col gap-[10px] items-center">
+      <div className="border-t-8 border-primary-500 px-[38px] pt-[38px] pb-[38px] max-sm:px-[28px] max-sm:pt-[32px] max-sm:pb-[32px]">
+        <div className="flex flex-col gap-[32px] items-center w-full">
+          <div className="flex flex-col gap-[20px] items-center w-full">
+            <div className="flex flex-col gap-[10px] items-center w-full">
               <div className="size-[87px] rounded-full bg-primary-100 flex items-center justify-center">
                 <Image
                   src="/assets/consultation/success-check.svg"
@@ -910,7 +910,7 @@ function SuccessCard({
               <h2 className="font-bold text-[32px] leading-[51px] text-secondary-800 text-center">
                 You&apos;re booked, {firstName}
               </h2>
-              <p className="text-[18px] leading-[24px] text-[#5d5d5d] text-center max-w-[484px]">
+              <p className="w-full max-w-[484px] break-words text-[18px] leading-[24px] text-[#5d5d5d] text-center">
                 We&apos;ve reserved{" "}
                 <span className="font-bold text-secondary-800">{when}</span> to
                 talk about{" "}
