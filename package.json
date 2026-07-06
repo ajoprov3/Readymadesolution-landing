@@ -16,6 +16,7 @@
     "@mui/material-nextjs": "^9.1.1",
     "@mui/x-charts": "^9.8.0",
     "@mui/x-data-grid": "^9.8.0",
+    "@neondatabase/auth": "^0.4.2-beta",
     "@neondatabase/serverless": "^1.1.0",
     "drizzle-orm": "^0.45.2",
     "motion": "^12.42.2",

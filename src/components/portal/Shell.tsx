@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -13,10 +13,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
+import ButtonBase from "@mui/material/ButtonBase";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import Badge from "@mui/material/Badge";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
 import NotificationsNoneOutlined from "@mui/icons-material/NotificationsNoneOutlined";
 import SpaceDashboardOutlined from "@mui/icons-material/SpaceDashboardOutlined";
 import PeopleAltOutlined from "@mui/icons-material/PeopleAltOutlined";
@@ -24,10 +29,19 @@ import CalendarMonthOutlined from "@mui/icons-material/CalendarMonthOutlined";
 import GroupAddOutlined from "@mui/icons-material/GroupAddOutlined";
 import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import type { SvgIconComponent } from "@mui/icons-material";
+import { authClient } from "@/lib/auth/client";
 
 const DRAWER_WIDTH = 256;
 
+export type ShellUser = { name: string; email: string };
+
 type NavItem = { label: string; href: string; icon: SvgIconComponent };
+
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "RS";
+  return (parts[0][0] + (parts[1]?.[0] ?? "")).toUpperCase();
+}
 
 const NAV: NavItem[] = [
   { label: "Dashboard", href: "/portal", icon: SpaceDashboardOutlined },
@@ -41,7 +55,27 @@ function isActive(pathname: string, href: string) {
   return href === "/portal" ? pathname === "/portal" : pathname.startsWith(href);
 }
 
-function DrawerContent({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+function DrawerContent({
+  pathname,
+  user,
+  onNavigate,
+}: {
+  pathname: string;
+  user: ShellUser;
+  onNavigate?: () => void;
+}) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [signingOut, setSigningOut] = useState(false);
+  const router = useRouter();
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    await authClient.signOut();
+    setAnchorEl(null);
+    router.push("/auth/sign-in");
+    router.refresh();
+  }
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Brand */}
@@ -104,8 +138,12 @@ function DrawerContent({ pathname, onNavigate }: { pathname: string; onNavigate?
 
       {/* Account */}
       <Box sx={{ p: 1.5 }}>
-        <Box
+        <ButtonBase
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          aria-label="Account menu"
+          aria-haspopup="true"
           sx={{
+            width: "100%",
             display: "flex",
             alignItems: "center",
             gap: 1.25,
@@ -113,26 +151,54 @@ function DrawerContent({ pathname, onNavigate }: { pathname: string; onNavigate?
             border: 1,
             borderColor: "divider",
             borderRadius: 3,
+            textAlign: "left",
+            "&:hover": { bgcolor: "grey.100" },
           }}
         >
           <Avatar sx={{ width: 32, height: 32, bgcolor: "secondary.main", fontSize: 13, fontWeight: 600 }}>
-            RS
+            {initials(user.name)}
           </Avatar>
-          <Box sx={{ minWidth: 0 }}>
+          <Box sx={{ minWidth: 0, flex: 1 }}>
             <Typography noWrap sx={{ fontSize: 13, fontWeight: 600, color: "text.primary" }}>
-              Readymade Team
+              {user.name}
             </Typography>
-            <Typography noWrap sx={{ fontSize: 11, color: "text.secondary" }}>
-              hello@readymade.io
-            </Typography>
+            {user.email && (
+              <Typography noWrap sx={{ fontSize: 11, color: "text.secondary" }}>
+                {user.email}
+              </Typography>
+            )}
           </Box>
-        </Box>
+        </ButtonBase>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={() => setAnchorEl(null)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+          slotProps={{ paper: { sx: { width: DRAWER_WIDTH - 24, borderRadius: 3 } } }}
+        >
+          <Box sx={{ px: 2, py: 1 }}>
+            <Typography noWrap sx={{ fontSize: 13, fontWeight: 600 }}>
+              {user.name}
+            </Typography>
+            {user.email && (
+              <Typography noWrap sx={{ fontSize: 11, color: "text.secondary" }}>
+                {user.email}
+              </Typography>
+            )}
+          </Box>
+          <Divider />
+          <MenuItem onClick={handleSignOut} disabled={signingOut} sx={{ fontSize: 14, gap: 1.25, py: 1 }}>
+            <LogoutOutlined sx={{ fontSize: 18 }} />
+            Sign out
+          </MenuItem>
+        </Menu>
       </Box>
     </Box>
   );
 }
 
-export default function Shell({ children }: { children: ReactNode }) {
+export default function Shell({ children, user }: { children: ReactNode; user: ShellUser }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const title = [...NAV].reverse().find((n) => isActive(pathname, n.href))?.label ?? "Portal";
@@ -153,7 +219,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           },
         }}
       >
-        <DrawerContent pathname={pathname} />
+        <DrawerContent pathname={pathname} user={user} />
       </Drawer>
 
       {/* Temporary drawer — mobile */}
@@ -167,7 +233,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           "& .MuiDrawer-paper": { width: DRAWER_WIDTH, boxSizing: "border-box" },
         }}
       >
-        <DrawerContent pathname={pathname} onNavigate={() => setMobileOpen(false)} />
+        <DrawerContent pathname={pathname} user={user} onNavigate={() => setMobileOpen(false)} />
       </Drawer>
 
       {/* Main column */}
@@ -199,7 +265,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               </IconButton>
             </Tooltip>
             <Avatar sx={{ width: 32, height: 32, bgcolor: "secondary.main", fontSize: 13, fontWeight: 600 }}>
-              RS
+              {initials(user.name)}
             </Avatar>
           </Toolbar>
         </AppBar>

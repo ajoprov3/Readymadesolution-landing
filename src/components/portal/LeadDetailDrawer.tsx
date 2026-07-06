@@ -19,7 +19,11 @@ import StatusChip from "./StatusChip";
 import { LEAD_STATUSES, type LeadStatus } from "./leadStatus";
 import { getLeadDetail, updateLeadStatus, addLeadNote, type LeadDetail } from "@/app/portal/leads/actions";
 
-const WIDTH = 440;
+function branchLabel(b: string | null) {
+  if (b === "build") return "Build a project";
+  if (b === "product") return "Use a product";
+  return "—";
+}
 
 function relative(iso: string) {
   const m = Math.round((Date.now() - new Date(iso).getTime()) / 6e4);
@@ -129,7 +133,15 @@ export default function LeadDetailDrawer({
       anchor="right"
       open={open}
       onClose={onClose}
-      slotProps={{ paper: { sx: { width: { xs: "100%", sm: WIDTH }, borderRadius: 0 } } }}
+      slotProps={{
+        paper: {
+          sx: {
+            width: { xs: "100%", sm: "80vw", md: "60vw" },
+            maxWidth: 940,
+            borderRadius: 0,
+          },
+        },
+      }}
     >
       {/* Header */}
       <Box sx={{ p: 2.5, display: "flex", alignItems: "flex-start", gap: 1.5 }}>
@@ -225,35 +237,52 @@ export default function LeadDetailDrawer({
             {savingStatus && <CircularProgress size={16} />}
           </Box>
 
-          {/* Details */}
-          <Box sx={{ mb: 1 }}>
-            <Row label="Focus" value={lead.focus || "—"} />
-            <Divider />
-            <Row label="Branch" value={lead.branch ? lead.branch : "—"} />
-            <Divider />
+          {/* Consultation submission — what they filled in on the landing form */}
+          <Typography
+            sx={{ mb: 1, fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", color: "text.secondary" }}
+          >
+            Consultation form
+          </Typography>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+              columnGap: 3,
+              border: 1,
+              borderColor: "divider",
+              borderRadius: 3,
+              px: 2,
+              py: 0.5,
+              mb: 2,
+            }}
+          >
+            <Row label="Path" value={branchLabel(lead.branch)} />
+            <Row
+              label={lead.branch === "product" ? "Product" : "Project type"}
+              value={lead.focus || "—"}
+            />
+            <Row label="Full name" value={lead.name} />
+            <Row label="Email" value={lead.email} />
+            <Row label="Preferred time" value={fmtFull(lead.calStart)} />
             <Row label="Timezone" value={lead.timezone || "—"} />
-            <Divider />
+            <Row label="Submitted" value={fmtFull(lead.createdAt)} />
             <Row label="Source" value={lead.source} />
-            <Divider />
-            <Row label="Created" value={fmtFull(lead.createdAt)} />
-            <Divider />
-            <Row label="Meeting" value={fmtFull(lead.calStart)} />
           </Box>
 
-          {/* Notes / original message */}
-          {lead.notes && (
-            <Paper
-              variant="outlined"
-              sx={{ mt: 2, p: 1.75, borderRadius: 3, bgcolor: "background.default" }}
-            >
-              <Typography sx={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", color: "text.secondary", mb: 0.5 }}>
-                Message
-              </Typography>
-              <Typography sx={{ fontSize: 13.5, color: "text.primary", whiteSpace: "pre-wrap" }}>
-                {lead.notes}
-              </Typography>
-            </Paper>
-          )}
+          {/* The message they typed on the form */}
+          <Paper
+            variant="outlined"
+            sx={{ p: 2, borderRadius: 3, bgcolor: "background.default" }}
+          >
+            <Typography sx={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", color: "text.secondary", mb: 0.75 }}>
+              {lead.branch === "product"
+                ? "What they want from the product"
+                : "What they told us about the project"}
+            </Typography>
+            <Typography sx={{ fontSize: 14, lineHeight: 1.6, color: "text.primary", whiteSpace: "pre-wrap" }}>
+              {lead.notes || "No message was provided on the form."}
+            </Typography>
+          </Paper>
 
           {/* Add note */}
           <Box sx={{ mt: 3 }}>

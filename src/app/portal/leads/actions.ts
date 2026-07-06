@@ -5,10 +5,17 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { leads, leadEvents } from "@/db/schema";
 import { LEAD_STATUSES, type LeadStatus } from "@/components/portal/leadStatus";
+import { auth } from "@/lib/auth/server";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type Result = { ok: true } | { error: string };
+
+/** Server-side auth guard for portal actions. Returns the user id or null. */
+async function currentUserId(): Promise<string | null> {
+  const { data } = await auth.getSession();
+  return data?.user?.id ?? null;
+}
 
 function revalidateLeads() {
   revalidatePath("/portal/leads");
@@ -25,6 +32,8 @@ export type CreateLeadInput = {
 };
 
 export async function createLead(input: CreateLeadInput): Promise<Result> {
+  const actor = await currentUserId();
+  if (!actor) return { error: "Not authorized." };
   const name = input.name?.trim() ?? "";
   const email = input.email?.trim() ?? "";
   if (!name || name.length >= 200) return { error: "Name is required (under 200 characters)." };
@@ -53,7 +62,7 @@ export async function createLead(input: CreateLeadInput): Promise<Result> {
     if (lead) {
       await db.insert(leadEvents).values({
         leadId: lead.id,
-        actor: null,
+        actor,
         type: "created",
         body: "Lead added manually",
       });
@@ -67,12 +76,14 @@ export async function createLead(input: CreateLeadInput): Promise<Result> {
 }
 
 export async function updateLeadStatus(id: string, status: LeadStatus): Promise<Result> {
+  const actor = await currentUserId();
+  if (!actor) return { error: "Not authorized." };
   if (!LEAD_STATUSES.includes(status)) return { error: "Invalid status." };
   try {
     await db.update(leads).set({ status, updatedAt: new Date() }).where(eq(leads.id, id));
     await db.insert(leadEvents).values({
       leadId: id,
-      actor: null,
+      actor,
       type: "status_changed",
       body: `Status → ${status}`,
     });
@@ -85,10 +96,12 @@ export async function updateLeadStatus(id: string, status: LeadStatus): Promise<
 }
 
 export async function addLeadNote(id: string, note: string): Promise<Result> {
+  const actor = await currentUserId();
+  if (!actor) return { error: "Not authorized." };
   const body = note?.trim() ?? "";
   if (!body || body.length >= 2000) return { error: "Note must be 1–2000 characters." };
   try {
-    await db.insert(leadEvents).values({ leadId: id, actor: null, type: "note", body });
+    await db.insert(leadEvents).values({ leadId: id, actor, type: "note", body });
     revalidateLeads();
     return { ok: true };
   } catch (err) {
@@ -122,6 +135,7 @@ export type LeadDetail = {
 export async function getLeadDetail(
   id: string,
 ): Promise<{ lead: LeadDetail } | { error: string }> {
+  if (!(await currentUserId())) return { error: "Not authorized." };
   try {
     const [lead] = await db.select().from(leads).where(eq(leads.id, id));
     if (!lead) return { error: "Lead not found." };
