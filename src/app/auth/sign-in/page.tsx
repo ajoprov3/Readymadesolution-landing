@@ -1,13 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
-import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import Link from "@mui/material/Link";
 import { signInWithEmail, type AuthState } from "./actions";
 
 const initial: AuthState = {};
@@ -51,10 +49,7 @@ export default function SignInPage() {
       </Button>
 
       <Typography sx={{ fontSize: 13, color: "text.secondary", textAlign: "center", mt: 0.5 }}>
-        Need an account?{" "}
-        <Link component={NextLink} href="/auth/sign-up" sx={{ fontWeight: 600, color: "primary.dark" }}>
-          Create one
-        </Link>
+        Access is invite-only. Ask a workspace admin for an invite.
       </Typography>
     </Box>
   );

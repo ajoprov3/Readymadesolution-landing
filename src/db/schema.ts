@@ -1,11 +1,22 @@
 import {
   pgTable,
+  pgSchema,
   uuid,
   text,
   timestamp,
   pgEnum,
   index,
 } from "drizzle-orm/pg-core";
+
+/* ---- Neon Auth (read-only): organization membership, for the portal gate ---- */
+const neonAuth = pgSchema("neon_auth");
+export const authMember = neonAuth.table("member", {
+  id: uuid("id").primaryKey(),
+  organizationId: uuid("organizationId"),
+  userId: uuid("userId"),
+  role: text("role"),
+  createdAt: timestamp("createdAt", { withTimezone: true }),
+});
 
 /* ---- enums ---- */
 export const roleEnum = pgEnum("member_role", ["admin", "member"]);
