@@ -17,6 +17,16 @@ export const authMember = neonAuth.table("member", {
   role: text("role"),
   createdAt: timestamp("createdAt", { withTimezone: true }),
 });
+export const authInvitation = neonAuth.table("invitation", {
+  id: uuid("id").primaryKey(),
+  organizationId: uuid("organizationId"),
+  email: text("email"),
+  role: text("role"),
+  status: text("status"),
+  expiresAt: timestamp("expiresAt", { withTimezone: true }),
+  createdAt: timestamp("createdAt", { withTimezone: true }),
+  inviterId: uuid("inviterId"),
+});
 
 /* ---- enums ---- */
 export const roleEnum = pgEnum("member_role", ["admin", "member"]);
