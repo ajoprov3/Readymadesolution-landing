@@ -49,7 +49,7 @@ const CARDS: Card[][] = [
   [
     {
       title: "Ajopro 3.0 - Fintech App",
-      desc: "A full redesign of the Ajopro fintech contribution & savings app - smoother onboarding, clearer wallets and automated payouts.",
+      desc: "A full redesign of the Ajopro fintech contribution & planning platform - smoother onboarding, clearer wallets and automated payouts.",
       tags: ["Fintech", "Mobile App", "Redesign"],
       img: "/assets/home/product-ajopro.png",
       imgW: 662,

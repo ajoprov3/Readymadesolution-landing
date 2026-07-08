@@ -21,7 +21,7 @@ const projects: Project[] = [
   {
     title: "Ajopro 3.0 - Fintech App",
     description:
-      "A full redesign of the Ajopro fintech contribution & savings app - smoother onboarding, clearer wallets and automated payouts.",
+      "A full redesign of the Ajopro fintech contribution & planning platform - smoother onboarding, clearer wallets and automated payouts.",
     tags: ["Fintech", "Mobile App", "Redesign"],
     image: "/assets/projects/ajopro-fintech-app.png",
     href: "https://ajopro.ca",
