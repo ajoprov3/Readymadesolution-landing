@@ -12,17 +12,6 @@ function LinkedInIcon() {
   );
 }
 
-function XIcon() {
-  return (
-    <svg width="17" height="17" viewBox="59 14 16 15" fill="none" aria-hidden>
-      <path
-        d="M71.8875 14.5166H74.0833L68.9125 20.3958L74.7916 28.6833H70.1166L66.4333 23.9374L62.2541 28.6833H60.0583L65.5833 22.3791L59.6333 14.5166H64.45L67.7791 18.9083L71.8875 14.5166ZM71.1083 27.3374H72.3125L63.6708 15.7916H62.3958L71.1083 27.3374Z"
-        fill="#B9B9B9"
-      />
-    </svg>
-  );
-}
-
 function InstagramIcon() {
   return (
     <svg width="17" height="17" viewBox="108 14.5 14 14" fill="none" aria-hidden>
@@ -45,9 +34,16 @@ function InstagramIcon() {
 }
 
 const SOCIALS = [
-  { label: "LinkedIn", href: "#", icon: <LinkedInIcon /> },
-  { label: "X", href: "#", icon: <XIcon /> },
-  { label: "Instagram", href: "#", icon: <InstagramIcon /> },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/ready-made-solution-inc/",
+    icon: <LinkedInIcon />,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/readymadesolution",
+    icon: <InstagramIcon />,
+  },
 ];
 
 const COMPANY_LINKS = [
@@ -74,6 +70,8 @@ export default function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s.label}
                   className="pressable flex size-[38px] items-center justify-center rounded-[11px] bg-secondary-800 hover:bg-secondary-500"
                 >
