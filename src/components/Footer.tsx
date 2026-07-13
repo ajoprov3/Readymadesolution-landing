@@ -57,9 +57,9 @@ export default function Footer() {
   return (
     <footer className="w-full bg-black px-4 pb-[34px] pt-[72px] sm:px-[112px]">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[54px]">
-        <div className="flex flex-col gap-10 md:flex-row md:items-stretch md:gap-4">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr] md:gap-8">
           {/* Brand column */}
-          <div className="flex w-full flex-col items-start gap-[17px] md:w-[314px]">
+          <div className="flex flex-col items-start gap-[17px]">
             <Logo dark />
             <p className="max-w-[280px] font-sans text-[14.5px] leading-[24px] text-neutral-300">
               Engineering intelligent software, AI automation, and enterprise
@@ -82,7 +82,7 @@ export default function Footer() {
           </div>
 
           {/* Company */}
-          <div className="flex flex-1 flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <p className="text-[16px] font-bold uppercase leading-[24px] text-primary-500">
               Company
             </p>
@@ -101,7 +101,7 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="flex w-full flex-col gap-4 md:w-[240px]">
+          <div className="flex flex-col gap-4">
             <p className="text-[16px] font-bold uppercase leading-[24px] text-primary-500">
               Contact
             </p>
@@ -121,7 +121,7 @@ export default function Footer() {
           </div>
 
           {/* Get started */}
-          <div className="flex flex-1 flex-col gap-[14px]">
+          <div className="flex flex-col gap-[14px]">
             <p className="text-[16px] font-bold uppercase leading-[24px] text-primary-500">
               Get started
             </p>
