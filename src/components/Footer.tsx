@@ -14,7 +14,13 @@ function LinkedInIcon() {
 
 function InstagramIcon() {
   return (
-    <svg width="17" height="17" viewBox="108 14.5 14 14" fill="none" aria-hidden>
+    <svg
+      width="17"
+      height="17"
+      viewBox="108 14.5 14 14"
+      fill="none"
+      aria-hidden
+    >
       <path
         d="M117.833 15.225H112.167C110.211 15.225 108.625 16.8106 108.625 18.7666V24.4333C108.625 26.3893 110.211 27.975 112.167 27.975H117.833C119.789 27.975 121.375 26.3893 121.375 24.4333V18.7666C121.375 16.8106 119.789 15.225 117.833 15.225Z"
         stroke="#B9B9B9"
@@ -33,16 +39,32 @@ function InstagramIcon() {
   );
 }
 
+function XIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M18.244 2.25H21.552L14.325 10.51L22.827 21.75H16.17L10.956 14.933L4.99 21.75H1.68L9.41 12.915L1.254 2.25H8.08L12.793 8.481L18.244 2.25ZM17.083 19.77H18.916L7.084 4.126H5.117L17.083 19.77Z"
+        fill="#B9B9B9"
+      />
+    </svg>
+  );
+}
+
 const SOCIALS = [
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/company/ready-made-solution-inc/",
     icon: <LinkedInIcon />,
   },
+  // {
+  //   label: "Instagram",
+  //   href: "https://www.instagram.com/readymadesolution",
+  //   icon: <InstagramIcon />,
+  // },
   {
-    label: "Instagram",
-    href: "https://www.instagram.com/readymadesolution",
-    icon: <InstagramIcon />,
+    label: "X",
+    href: "https://www.x.com/readymadesoltn",
+    icon: <XIcon />,
   },
 ];
 
@@ -107,7 +129,9 @@ export default function Footer() {
             </p>
             <ul className="flex flex-col gap-[11px] text-[16px] leading-[24px] text-neutral-300">
               <li>
-                <a href="mailto:info@readymadesolution.com">info@readymadesolution.com</a>
+                <a href="mailto:info@readymadesolution.com">
+                  info@readymadesolution.com
+                </a>
               </li>
               <li>
                 <a href="tel:+12046745873">+1 (204) 674-5873</a>
@@ -141,9 +165,15 @@ export default function Footer() {
         <div className="flex flex-wrap items-center justify-center border-t border-secondary-100/20 pt-6">
           <div className="flex items-center gap-6 font-sans text-[13px] text-secondary-300">
             <span>Copyright © ReadyMade Solution 2026</span>
-            <span className="size-1 rounded-full bg-secondary-300" aria-hidden />
+            <span
+              className="size-1 rounded-full bg-secondary-300"
+              aria-hidden
+            />
             <Link href="/privacy">Privacy</Link>
-            <span className="size-1 rounded-full bg-secondary-300" aria-hidden />
+            <span
+              className="size-1 rounded-full bg-secondary-300"
+              aria-hidden
+            />
             <Link href="/terms">Terms</Link>
           </div>
         </div>
